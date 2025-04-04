@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import requests
 
 app = Flask(__name__)
@@ -30,9 +30,14 @@ def get_instock_by_account_code(account_code):
     except requests.exceptions.RequestException:
         return None  
 
-# Endpoint lấy instock theo key
-@app.route('/key=<key>', methods=['GET'])
-def get_instock(key):
+# Sửa route thành "/"
+@app.route('/', methods=['GET'])
+def get_instock():
+    key = request.args.get('key')  # Lấy key từ URL query params
+    
+    if not key:
+        return jsonify({"error": "Missing key parameter"}), 400
+    
     account_code = get_account_code_by_key(key)
     
     if not account_code:
