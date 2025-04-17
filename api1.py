@@ -9,6 +9,7 @@ def get_account_code_by_key(key):
     key_to_account_code = {
         '7425079c-9b59-4529-8cd4-e1029a8d808d': 'HOTMAIL',
         '4ca32193-4bd9-47a9-8ee6-b4c058bc9857': 'HOTMAIL_TRUSTED',
+        'instock': 'instock',
     }
     return key_to_account_code.get(key)
 
