@@ -23,15 +23,6 @@ def get_instock_by_account_code(account_code):
         if data.get('Code') != 0 or not isinstance(data.get('Data'), list):
             return None  
 
-        # Trường hợp đặc biệt cho key 'instock': trả về tổng số instock của tất cả các loại
-        if account_code == 'instock':
-            total_instock = 0
-            for item in data['Data']:
-                if isinstance(item.get('Instock'), int):
-                    total_instock += item.get('Instock', 0)
-            return total_instock
-
-        # Trường hợp thông thường: tìm instock cho account_code cụ thể
         for item in data['Data']:
             if item.get('AccountCode') == account_code:
                 return item.get('Instock')
@@ -96,8 +87,6 @@ def api_endpoint():
         
         try:
             quantity = int(quantity)
-            if account_code == 'instock':  # Không thể mua hàng với key 'instock'
-                return jsonify({"error": "Cannot purchase with 'instock' key"}), 400
             return buy_order(account_code, quantity)
         except ValueError:
             return jsonify({"error": "Quantity must be a number"}), 400
